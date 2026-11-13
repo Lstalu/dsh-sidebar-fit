@@ -1,0 +1,10 @@
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# 本地对比快照：不是插件运行时的一部分
+lib/client-old.js
+lib/*.bak
+lib/*.bak2
+test/harness-old.html

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>dsh-sidebar-fit harness</title>
+<style>
+  /* 还原 dsh-client-ui-sidebar 的关键布局（类名带 hash 前缀，验证后缀选择器） */
+  :root { --bg:#16181c; --fg:#e6e8ea; --muted:#9aa0a6; --hover:rgba(255,255,255,.08); --line:rgba(255,255,255,.14); }
+  html,body { height:100%; margin:0; background:#0d0f12; color:var(--fg);
+    font:14px/1.4 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif; }
+  .wrap { display:flex; height:100vh; }
+  .fake9_root { width:300px; height:100%; box-sizing:border-box; padding:6px 8px;
+    display:flex; flex-direction:column; background:var(--bg); }
+  .fake9_logoRow { flex:none; height:60px; display:flex; align-items:center; padding-left:8px;
+    font-size:18px; font-weight:600; }
+  .fake9_newSession { flex:none; height:38px; margin:0 1px 10px; border:.5px solid var(--line);
+    border-radius:8px; background:rgba(255,255,255,.06); color:inherit; cursor:pointer; }
+  .fake9_panelList { flex-direction:column; flex:none; gap:2px; margin-bottom:8px; display:flex; }
+  .fake9_panelRow { min-height:36px; padding:7px 12px; display:flex; align-items:center; gap:6px;
+    border:none; border-radius:8px; background:transparent; color:inherit; font:inherit;
+    text-align:left; cursor:pointer; }
+  .fake9_panelRow:hover { background:var(--hover); }
+  .fake9_panelGlyph { flex:none; width:16px; height:16px; display:inline-flex; }
+  .fake9_panelTitle { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .fake9_regionArea { min-height:0; flex:1; display:flex; flex-direction:column; overflow:hidden; }
+  .fake9_regionScroll { flex:1; overflow:auto; }
+  .sec { color:var(--muted); font-size:12px; padding:6px 4px; }
+  .ws { padding:8px 10px; border-radius:8px; }
+  .ws:hover { background:var(--hover); }
+  .fake9_footArea { flex:none; display:flex; flex-direction:column; }
+  .foot { height:36px; display:flex; align-items:center; padding:0 8px; color:var(--muted); }
+  .panel { flex:1; border-left:.5px solid var(--line); padding:24px; }
+  .note { color:var(--muted); font-size:12px; line-height:1.7; }
+  code { background:rgba(255,255,255,.08); padding:1px 5px; border-radius:4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="fake9_root" id="root">
+    <div class="fake9_logoRow">DeepSeek Harness</div>
+    <button class="fake9_newSession" type="button">+ 新会话</button>
+    <nav class="fake9_panelList" aria-label="全局面板">
+      <button class="fake9_panelRow" type="button" aria-label="插件"><span class="fake9_panelGlyph">◈</span><span class="fake9_panelTitle">插件</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="插件市场"><span class="fake9_panelGlyph">▦</span><span class="fake9_panelTitle">插件市场</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="歸藏设计"><span class="fake9_panelGlyph">▤</span><span class="fake9_panelTitle">歸藏设计</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="自动化任务"><span class="fake9_panelGlyph">◷</span><span class="fake9_panelTitle">自动化任务</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="灵枢"><span class="fake9_panelGlyph">◎</span><span class="fake9_panelTitle">灵枢</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="上下文洞察"><span class="fake9_panelGlyph">▣</span><span class="fake9_panelTitle">上下文洞察</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="Purge"><span class="fake9_panelGlyph">◭</span><span class="fake9_panelTitle">Purge</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="技能中心"><span class="fake9_panelGlyph">▥</span><span class="fake9_panelTitle">技能中心</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="设备调试"><span class="fake9_panelGlyph">◫</span><span class="fake9_panelTitle">设备调试</span></button>
+      <button class="fake9_panelRow" type="button" aria-label="更多" aria-haspopup="menu" aria-expanded="false"><span class="fake9_panelGlyph">⊞</span><span class="fake9_panelTitle">更多</span></button>
+    </nav>
+    <div class="fake9_regionArea">
+      <div class="fake9_regionScroll">
+        <div class="sec">工作区</div>
+        <div class="ws">📁 Downloads</div>
+        <div class="ws">　新会话</div>
+        <div class="ws">　新会话 二</div>
+        <div class="ws">📁 dsh-plugins</div>
+        <div class="ws">　侧边栏改造</div>
+      </div>
+    </div>
+    <div class="fake9_footArea">
+      <div class="foot">🖥 Remote</div>
+      <div class="foot">嵌有鸢尾的信</div>
+    </div>
+  </div>
+  <div class="panel">
+    <p class="note">这是 <code>dsh-sidebar-fit</code> 的行为验证台：结构与 <code>dsh-client-ui-sidebar</code> 的
+      真实 DOM 一致（<code>*_panelList</code> / <code>*_regionArea</code> / <code>*_panelRow</code> 后缀）。
+      拖动面板列表与工作区之间的分界线；双击复位；把侧栏拖到很矮看「更多」。</p>
+    <p class="note" id="log"></p>
+  </div>
+</div>
+
+<script>
+  // 模拟官方 PanelMoreMenu：点「更多」时把菜单 portal 到 body（类名带 hash 形前缀）
+  let officialMenu = null;
+  function closeOfficialMenu() {
+    if (officialMenu !== null) { officialMenu.remove(); officialMenu = null; }
+    document.querySelector('[aria-haspopup="menu"]').setAttribute('aria-expanded', 'false');
+  }
+  document.addEventListener('click', (event) => {
+    const more = event.target.closest && event.target.closest('[aria-haspopup="menu"]');
+    if (more !== null) {
+      if (officialMenu !== null) { closeOfficialMenu(); return; }
+      more.setAttribute('aria-expanded', 'true');
+      const rect = more.getBoundingClientRect();
+      const menu = document.createElement('div');
+      menu.className = 'fake9_moreMenu';
+      menu.style.cssText = 'position:fixed;z-index:9;min-width:200px;padding:6px;border-radius:10px;' +
+        'background:#23262b;border:.5px solid rgba(255,255,255,.16);box-shadow:0 12px 32px rgba(0,0,0,.4);' +
+        'left:' + Math.round(rect.left) + 'px;top:' + Math.round(rect.bottom + 4) + 'px';
+      for (const label of ['浏览更多插件', '创建你的插件']) {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'fake9_moreItem';
+        item.style.cssText = 'display:block;width:100%;min-height:30px;padding:5px 8px;border:none;' +
+          'border-radius:7px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer';
+        item.textContent = label;
+        menu.appendChild(item);
+      }
+      document.body.appendChild(menu);
+      officialMenu = menu;
+      return;
+    }
+    if (officialMenu !== null && !officialMenu.contains(event.target)) closeOfficialMenu();
+  }, true);
+</script>
+<script>
+  // 模拟 dsh 的浏览器模块加载器
+  window.__ModuleLoader__ = {
+    load(def) { window.__fitDef = def; },
+  };
+</script>
+<script src="../lib/client.js"></script>
+<script>
+  const def = window.__fitDef;
+  const mod = def.factory(() => { throw new Error('no require'); });
+  mod.apply({ effect(fn) { fn(); } });
+  const rows = document.querySelectorAll('nav[class*="panelList"] > button');
+  setTimeout(() => {
+    const nav = document.querySelector('nav[class*="panelList"]');
+    const hidden = nav.querySelectorAll('.sidebar-fit-hidden').length;
+    const more = nav.querySelector('[data-sidebar-fit-more]');
+    const handle = document.querySelector('.sidebar-fit-handle');
+    document.getElementById('log').textContent =
+      '面板行 ' + rows.length +
+      ' · 隐藏 ' + hidden +
+      ' · 更多行 ' + (more === null ? '无' : '"' + more.textContent.trim() + '"') +
+      ' · 分界线 ' + (handle === null ? '无' : Math.round(handle.getBoundingClientRect().height) + 'px');
+  }, 300);
+</script>
+</body>
+</html>

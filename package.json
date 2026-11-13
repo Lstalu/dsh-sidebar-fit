@@ -1,0 +1,45 @@
+{
+  "name": "dsh-sidebar-fit",
+  "version": "0.1.0",
+  "description": "DSH 侧栏空间分配器：给工作区会话区留一条可拖动的保底高度，超出的插件面板行自动收进「更多」行内浮层。",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "test"
+  ],
+  "scripts": {
+    "check": "node --check lib/client.js",
+    "test": "node test/contract.mjs",
+    "perf": "node test/perf.mjs"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "sidebar",
+    "layout",
+    "侧边栏"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "license": "MIT"
+}

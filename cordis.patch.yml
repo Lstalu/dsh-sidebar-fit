@@ -1,0 +1,13 @@
+# dsh-sidebar-fit bundle patch —— 当本 bundle 被列进 profile 的
+# dsh.profile.bundles（即 `dsh plugin --profile <name> add`）时生效。
+#
+# 一个包两张面孔：
+#   - 宿主半部（index.js）：无，空壳只为了让 loader 有条目可载；
+#   - 浏览器半部（lib/client.js，经 exports["./client"] + dsh.client 声明）：
+#     接管左侧栏里 `nav[class*=panelList]` 与 `div[class*=regionArea]` 之间的
+#     空间分配——插一条可上下拖动的分界线，把工作区的最小可见高度写进
+#     nav 的 max-height；再给超出的面板行做一条「更多」行，点开浮层直接复用
+#     原有按钮的 click，不复制任何业务逻辑。
+- insert:
+    - id: sidebar-fit
+      name: 'dsh-sidebar-fit'
