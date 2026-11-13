@@ -193,5 +193,38 @@ out.afterHome = await page.evaluate(() => {
   };
 });
 
+// —— 6. 反向拖动：向下拖应当让面板行逐行回来、工作区保底变小 ——
+out.downDrag = await (async () => {
+  const b = await handle.boundingBox();
+  const x = b.x + b.width / 2;
+  let y = b.y + b.height / 2;
+  const before = await page.evaluate(() => ({
+    hidden: document.querySelectorAll('.sidebar-fit-hidden').length,
+    minH: document.querySelector('div[class*="regionArea"]').style.minHeight,
+  }));
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  const seq = [];
+  for (let i = 1; i <= 16; i += 1) {
+    await page.mouse.move(x, y + i * 20);
+    await page.waitForTimeout(20);
+    seq.push(
+      await page.evaluate(() => ({
+        hidden: document.querySelectorAll('.sidebar-fit-hidden').length,
+        minH: document.querySelector('div[class*="regionArea"]').style.minHeight,
+      })),
+    );
+  }
+  await page.mouse.up();
+  await page.waitForTimeout(150);
+  const after = await page.evaluate(() => ({
+    hidden: document.querySelectorAll('.sidebar-fit-hidden').length,
+    minH: document.querySelector('div[class*="regionArea"]').style.minHeight,
+    maxHeight: document.querySelector('nav[class*="panelList"]').style.maxHeight,
+    stored: localStorage.getItem('dsh-sidebar-fit:minWorkspace'),
+  }));
+  return { before, seq, after };
+})();
+
 console.log(JSON.stringify(out, null, 2));
 await browser.close();
